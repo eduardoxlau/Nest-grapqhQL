@@ -17,10 +17,13 @@ type Query {
 }
 
 type Mutation {
-  createUser(createUserinput: CreateUserInput!): User!
+  createUser(input: UserInput!): User!
+  updateUser(input: UserInput!): User!
+  deleteUser(id: String!): User
 }
 
-input CreateUserInput {
+input UserInput {
+  id: String
   email: String!
   full_name: String!
   photo_path: String!
