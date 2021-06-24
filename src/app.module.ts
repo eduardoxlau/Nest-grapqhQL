@@ -1,7 +1,15 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { UsersModule } from './users/user.module';
 
 @Module({
-  imports: [],
+  imports: [
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+      playground: true,
+    }),
+    UsersModule,
+  ],
   controllers: [],
   providers: [],
 })
