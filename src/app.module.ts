@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersModule } from './users/user.module';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UsersModule } from './users/user.module';
     }),
     TypeOrmModule.forRoot(),
     UsersModule,
+    MoviesModule,
   ],
   controllers: [],
   providers: [],
