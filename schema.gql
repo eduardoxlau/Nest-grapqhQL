@@ -11,8 +11,23 @@ type User {
   password_hash: String!
 }
 
+type Video {
+  id: Float!
+  size: String!
+  type: String!
+  url: String!
+  movieId: Int!
+  movie: Movie
+}
+
+type Genre {
+  id: Float!
+  name: String!
+  movies: [Movie!]
+}
+
 type Movie {
-  id: String
+  id: Float!
   title: String!
   tagline: String!
   overview: String!
@@ -20,6 +35,8 @@ type Movie {
   poster_url: String!
   backdrop_url: String!
   imdb_id: String!
+  videos: [Video!]
+  genres: [Genre!]
 }
 
 """
@@ -31,7 +48,11 @@ type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
   getMovies: [Movie!]!
-  getMovie(id: String!): Movie!
+  getMovie(id: Float!): Movie!
+  getVideos: [Video!]!
+  getVideo(id: Float!): Video!
+  getGenres: [Genre!]!
+  getGenre(id: Float!): Genre!
 }
 
 type Mutation {
@@ -41,6 +62,11 @@ type Mutation {
   createMovie(input: MovieInput!): Movie!
   updateMovie(input: MovieInput!): Movie!
   deleteMovie(id: String!): Movie
+  createVideo(input: VideoInput!): Video!
+  updateVideo(input: VideoInput!): Video!
+  deleteVideo(id: String!): Video
+  createGenre(input: GenreInput!): Genre!
+  deleteGenre(id: String!): Genre
 }
 
 input UserInput {
@@ -53,7 +79,7 @@ input UserInput {
 }
 
 input MovieInput {
-  id: String
+  id: Float
   title: String!
   tagline: String!
   overview: String!
@@ -61,4 +87,18 @@ input MovieInput {
   poster_url: String!
   backdrop_url: String!
   imdb_id: String!
+  genres: [GenreInput!]!
+}
+
+input GenreInput {
+  id: Float
+  name: String!
+}
+
+input VideoInput {
+  id: Float
+  size: String!
+  type: String!
+  url: String!
+  movieId: Int!
 }

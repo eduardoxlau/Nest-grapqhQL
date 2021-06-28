@@ -1,12 +1,21 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
+import { Video } from 'src/videos/videos.entity';
+import { Genre } from 'src/genres/genres.entity';
 @ObjectType()
 @Entity()
 export class Movie {
   @PrimaryGeneratedColumn()
-  @Field({ nullable: true })
-  id: string;
+  @Field()
+  id: number;
 
   @Field()
   @Column()
@@ -35,4 +44,18 @@ export class Movie {
   @Field()
   @Column()
   imdb_id: string;
+
+  @Field(() => [Video], { nullable: true })
+  @OneToMany(() => Video, (video) => video.movie, {
+    lazy: true,
+  })
+  videos: Promise<Video[]>;
+
+  @Field(() => [Genre], { nullable: true })
+  @ManyToMany(() => Genre, (genre) => genre.movies, {
+    lazy: true,
+    cascade: true,
+  })
+  @JoinTable()
+  genres?: Promise<Genre[]> | Genre[];
 }

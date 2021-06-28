@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ValidationError } from 'apollo-server-express';
 
 import { Movie } from './movies.entity';
+import { MovieInput } from './dto/input/movie.input';
 import { MovieRepository } from './movies.repository';
 import { GetMovieArgs } from './dto/args/get-movies.arg';
-import { MovieInput } from './dto/input/movie.input';
 
 @Injectable()
 export class MoviesService {
@@ -20,9 +19,7 @@ export class MoviesService {
 
   async getMovie(input: GetMovieArgs): Promise<Movie> {
     const { id } = input;
-    const Movie = await this._MovieRepository.findOne(id);
-    if (Movie) return Movie;
-    throw new ValidationError(`not found Movie with this id ${id}`);
+    return await this._MovieRepository.findOne(id);
   }
 
   async createMovie(input: MovieInput): Promise<Movie> {

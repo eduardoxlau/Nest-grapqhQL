@@ -1,9 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { GenreInput } from 'src/genres/dto/input/genre.input';
 
 @InputType()
 export class MovieInput {
   @Field({ nullable: true })
-  id: string;
+  id: number;
 
   @Field()
   title: string;
@@ -25,4 +26,7 @@ export class MovieInput {
 
   @Field()
   imdb_id: string;
+
+  @Field(() => [GenreInput])
+  genres?: GenreInput[];
 }
