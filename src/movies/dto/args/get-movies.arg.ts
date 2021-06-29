@@ -1,9 +1,15 @@
-import { IsNotEmpty } from 'class-validator';
 import { ArgsType, Field } from '@nestjs/graphql';
-
 @ArgsType()
-export class GetMovieArgs {
-  @Field()
-  @IsNotEmpty()
-  id: number;
+export class GetMoviesArgs {
+  @Field({ defaultValue: 'DESC' })
+  order: 'ASC' | 'DESC';
+
+  @Field({ defaultValue: '' })
+  search: string;
+
+  @Field({ defaultValue: 1 })
+  page: number;
+
+  @Field({ defaultValue: 10 })
+  limit: number;
 }

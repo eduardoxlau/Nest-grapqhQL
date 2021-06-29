@@ -44,10 +44,23 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Meta {
+  itemCount: Float!
+  totalItems: Float!
+  itemsPerPage: Float!
+  totalPages: Float!
+  currentPage: Float!
+}
+
+type PaginatedMovies {
+  items: [Movie!]!
+  meta: Meta!
+}
+
 type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
-  getMovies: [Movie!]!
+  getMovies(order: String = "DESC", search: String = "", page: Float = 1, limit: Float = 10): PaginatedMovies!
   getMovie(id: Float!): Movie
   getVideos: [Video!]!
   getVideo(id: Float!): Video!
