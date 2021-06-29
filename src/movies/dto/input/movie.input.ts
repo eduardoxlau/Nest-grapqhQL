@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { GenreInput } from 'src/genres/dto/input/genre.input';
+import { GenreInput } from './../../../genres/dto/input/genre.input';
 
 @InputType()
 export class MovieInput {

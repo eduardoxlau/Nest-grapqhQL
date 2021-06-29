@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Video } from 'src/videos/videos.entity';
-import { Genre } from 'src/genres/genres.entity';
+import { Video } from './../videos/videos.entity';
+import { Genre } from './../genres/genres.entity';
 @ObjectType()
 @Entity()
 export class Movie {
