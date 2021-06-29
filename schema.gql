@@ -48,7 +48,7 @@ type Query {
   getUsers: [User!]!
   getUser(id: String!): User!
   getMovies: [Movie!]!
-  getMovie(id: Float!): Movie!
+  getMovie(id: Float!): Movie
   getVideos: [Video!]!
   getVideo(id: Float!): Video!
   getGenres: [Genre!]!
@@ -87,7 +87,7 @@ input MovieInput {
   poster_url: String!
   backdrop_url: String!
   imdb_id: String!
-  genres: [GenreInput!]!
+  genres: [GenreInput!]
 }
 
 input GenreInput {

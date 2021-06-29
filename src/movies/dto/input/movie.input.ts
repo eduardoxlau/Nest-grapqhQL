@@ -27,6 +27,6 @@ export class MovieInput {
   @Field()
   imdb_id: string;
 
-  @Field(() => [GenreInput])
-  genres?: GenreInput[];
+  @Field(() => [GenreInput], { nullable: true })
+  genres: GenreInput[];
 }

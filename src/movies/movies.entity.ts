@@ -49,7 +49,7 @@ export class Movie {
   @OneToMany(() => Video, (video) => video.movie, {
     lazy: true,
   })
-  videos: Promise<Video[]>;
+  videos: Video[];
 
   @Field(() => [Genre], { nullable: true })
   @ManyToMany(() => Genre, (genre) => genre.movies, {
@@ -57,5 +57,5 @@ export class Movie {
     cascade: true,
   })
   @JoinTable()
-  genres?: Promise<Genre[]> | Genre[];
+  genres: Genre[];
 }

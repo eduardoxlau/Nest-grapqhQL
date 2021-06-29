@@ -14,7 +14,7 @@ export class MoviesResolver {
     return this._MoviesService.getMovies();
   }
 
-  @Query(() => Movie)
+  @Query(() => Movie, { nullable: true })
   getMovie(@Args() getMovieArgs: GetMovieArgs): Promise<Movie> {
     return this._MoviesService.getMovie(getMovieArgs);
   }
