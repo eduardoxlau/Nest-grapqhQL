@@ -1,16 +1,32 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { User } from './user.entity';
-import { UsersService } from './user.service';
-import { GetUserArgs } from './dto/args/get-user.arg';
+import { User } from './users.entity';
+import { Token } from './dto/types/token';
+import { UsersService } from './users.service';
 import { UserInput } from './dto/input/user.input';
+import { AuthService } from '../auth/auth.service';
+import { CurrentUser } from '../auth/auth.decorator';
+import { LoginInput } from './dto/input/login.input';
+import { GetUserArgs } from './dto/args/get-user.arg';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(private readonly _usersService: UsersService) {}
+  constructor(
+    private readonly _usersService: UsersService,
+    private authService: AuthService,
+  ) {}
+
+  @Mutation(() => Token)
+  login(
+    @Args('input')
+    input: LoginInput,
+  ) {
+    return this.authService.validate(input);
+  }
 
   @Query(() => [User])
-  getUsers(): Promise<User[]> {
+  getUsers(@CurrentUser() user: User): Promise<User[]> {
+    console.log(user);
     return this._usersService.getUsers();
   }
 

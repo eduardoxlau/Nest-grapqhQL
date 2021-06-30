@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ValidationError } from 'apollo-server-express';
 
-import { User } from './user.entity';
-import { UserRepository } from './user.repository';
+import { User } from './users.entity';
+import { UserRepository } from './users.repository';
 import { GetUserArgs } from './dto/args/get-user.arg';
 import { UserInput } from './dto/input/user.input';
 
@@ -19,10 +18,10 @@ export class UsersService {
   }
 
   async getUser(input: GetUserArgs): Promise<User> {
-    const { id } = input;
-    const user = await this._userRepository.findOne(id);
+    const { email } = input;
+    const user = await this._userRepository.findOne({ email: email });
     if (user) return user;
-    throw new ValidationError(`not found user with this id ${id}`);
+    throw new UnauthorizedException();
   }
 
   async createUser(input: UserInput): Promise<User> {

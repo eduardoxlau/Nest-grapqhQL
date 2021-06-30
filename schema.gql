@@ -11,6 +11,10 @@ type User {
   password_hash: String!
 }
 
+type Token {
+  access_token: String!
+}
+
 type Video {
   id: Float!
   size: String!
@@ -59,7 +63,7 @@ type PaginatedMovies {
 
 type Query {
   getUsers: [User!]!
-  getUser(id: String!): User!
+  getUser(email: String!): User!
   getMovies(order: String = "DESC", search: String = "", page: Float = 1, limit: Float = 10): PaginatedMovies!
   getMovie(id: Float!): Movie
   getVideos: [Video!]!
@@ -69,6 +73,7 @@ type Query {
 }
 
 type Mutation {
+  login(input: LoginInput!): Token!
   createUser(input: UserInput!): User!
   updateUser(input: UserInput!): User!
   deleteUser(id: String!): User
@@ -80,6 +85,11 @@ type Mutation {
   deleteVideo(id: String!): Video
   createGenre(input: GenreInput!): Genre!
   deleteGenre(id: String!): Genre
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 input UserInput {
