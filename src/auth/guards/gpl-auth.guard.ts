@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { whileList } from '../auth.decorator';
+import { whiteListResolver } from '../auth.constants';
 
 export class GqlAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
@@ -13,7 +13,8 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     const fieldName = ctx.getInfo().fieldName;
-    if (whileList.includes(fieldName)) return true;
+    if (whiteListResolver.includes(fieldName)) return true;
+
     return super.canActivate(context);
   }
 

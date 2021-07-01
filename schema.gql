@@ -74,8 +74,8 @@ type Query {
 
 type Mutation {
   login(input: LoginInput!): Token!
-  createUser(input: UserInput!): User!
-  updateUser(input: UserInput!): User!
+  createUser(input: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
   deleteUser(id: String!): User
   createMovie(input: MovieInput!): Movie!
   updateMovie(input: MovieInput!): Movie!
@@ -92,13 +92,18 @@ input LoginInput {
   password: String!
 }
 
-input UserInput {
-  id: String
+input CreateUserInput {
   email: String!
   full_name: String!
   photo_path: String!
-  password_salt: String!
-  password_hash: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  id: Float!
+  email: String!
+  full_name: String!
+  photo_path: String!
 }
 
 input MovieInput {

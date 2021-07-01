@@ -1,6 +1,11 @@
+import {
+  Entity,
+  Column,
+  BeforeUpdate,
+  BeforeInsert,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
 @ObjectType()
 @Entity()
 export class User {
@@ -9,7 +14,7 @@ export class User {
   id: string;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Field()
@@ -27,4 +32,10 @@ export class User {
   @Field()
   @Column()
   password_hash: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  lowerCase?(): void {
+    this.email = this.email.toLowerCase();
+  }
 }

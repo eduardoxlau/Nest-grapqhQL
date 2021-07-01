@@ -7,5 +7,3 @@ export const CurrentUser = createParamDecorator(
     return ctx.getContext().req.user;
   },
 );
-
-export const whileList = ['login'];
