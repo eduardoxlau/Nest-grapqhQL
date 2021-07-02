@@ -3,9 +3,10 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './users.entity';
 import { Token } from './dto/types/token';
 import { UsersService } from './users.service';
+import { ResponseStatus } from '../utils/types/response';
 import { AuthService } from '../auth/auth.service';
 import { LoginInput } from './dto/input/login.input';
-import { GetUserArgs } from './dto/args/get-user.arg';
+import { CurrentUser } from './../auth/auth.decorator';
 import { CreateUserInput } from './dto/input/createUser.input';
 import { UpdateUserInput } from './dto/input/updateUser.input';
 
@@ -30,8 +31,8 @@ export class UsersResolver {
   }
 
   @Query(() => User)
-  getUser(@Args() getUserArgs: GetUserArgs): Promise<User> {
-    return this._usersService.getUser(getUserArgs);
+  getUser(@CurrentUser() user: User): Promise<User> {
+    return this._usersService.getUser(user.email);
   }
 
   @Mutation(() => User)
@@ -42,19 +43,14 @@ export class UsersResolver {
     return this._usersService.createUser(input);
   }
 
-  @Mutation(() => User)
-  updateUser(
+  @Mutation(() => ResponseStatus)
+  async updateUser(
     @Args('input')
     input: UpdateUserInput,
-  ): Promise<User> {
-    return this._usersService.updateUser(input);
-  }
-
-  @Mutation(() => User, { nullable: true })
-  deleteUser(
-    @Args('id')
-    id: string,
-  ): Promise<void> {
-    return this._usersService.deleteUser(id);
+    @CurrentUser() user: User,
+  ): Promise<ResponseStatus> {
+    console.log(user);
+    await this._usersService.updateUser(input, user);
+    return { status: 'success' };
   }
 }

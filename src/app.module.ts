@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersModule } from './users/users.module';
+import { ListsModule } from './lists/lists.module';
 import { MoviesModule } from './movies/movies.module';
 import { VideosModule } from './videos/videos.module';
 import { GenresModule } from './genres/genres.module';
@@ -23,6 +24,7 @@ import { GqlAuthGuard } from './auth/guards/gpl-auth.guard';
     MoviesModule,
     VideosModule,
     GenresModule,
+    ListsModule,
   ],
   controllers: [],
   providers: [

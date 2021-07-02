@@ -1,10 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateUserInput {
+export class ListMovieInput {
   @Field()
-  full_name: string;
+  listId: number;
 
   @Field()
-  photo_path: string;
+  movieId: number;
 }

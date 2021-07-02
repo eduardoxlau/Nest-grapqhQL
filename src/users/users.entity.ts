@@ -4,14 +4,17 @@ import {
   BeforeUpdate,
   BeforeInsert,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
+
+import { List } from './../lists/lists.entity';
 @ObjectType()
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   @Field()
-  id: string;
+  id: number;
 
   @Field()
   @Column({ unique: true })
@@ -38,4 +41,10 @@ export class User {
   lowerCase?(): void {
     this.email = this.email.toLowerCase();
   }
+
+  @Field(() => [List], { nullable: true })
+  @OneToMany(() => List, (list) => list.user, {
+    lazy: true,
+  })
+  lists: List[];
 }

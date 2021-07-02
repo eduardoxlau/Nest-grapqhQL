@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { UserRepository } from './users.repository';
 import { generateHash } from './../utils/encryption';
-import { GetUserArgs } from './dto/args/get-user.arg';
 import { CreateUserInput } from './dto/input/createUser.input';
 import { UpdateUserInput } from './dto/input/updateUser.input';
 @Injectable()
@@ -18,9 +17,8 @@ export class UsersService {
     return this._userRepository.find();
   }
 
-  async getUser(input: GetUserArgs): Promise<User> {
-    const { email } = input;
-    const user = await this._userRepository.findOne({ email: email });
+  async getUser(email: string): Promise<User> {
+    const user = await this._userRepository.findOne({ email });
     if (user) return user;
     throw new UnauthorizedException();
   }
@@ -37,13 +35,11 @@ export class UsersService {
 
     return await this._userRepository.save(user);
   }
-  async updateUser(input: UpdateUserInput): Promise<User> {
-    const { id, ...data } = input;
-    await this._userRepository.update(id, data);
-    return this.getUser(input);
-  }
+  async updateUser(input: UpdateUserInput, currentUser: User): Promise<void> {
+    const user = await this.getUser(currentUser.email);
 
-  async deleteUser(id: string): Promise<void> {
-    await this._userRepository.delete(id);
+    user.full_name = input.full_name;
+    user.photo_path = input.photo_path;
+    await this._userRepository.save(user);
   }
 }
