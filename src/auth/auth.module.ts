@@ -11,10 +11,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   imports: [
     forwardRef(() => UsersModule),
     PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1d' },
-    }),
+    JwtModule.registerAsync(jwtConstants),
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
