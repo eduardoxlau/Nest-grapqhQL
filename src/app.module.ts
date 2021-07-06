@@ -32,7 +32,6 @@ import { GqlAuthGuard } from './auth/guards/gpl-auth.guard';
     ListsModule,
   ],
   controllers: [],
-  exports: [ConfigModule],
   providers: [
     {
       provide: APP_GUARD,
