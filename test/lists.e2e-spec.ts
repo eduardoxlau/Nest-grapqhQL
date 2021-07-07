@@ -8,7 +8,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { List } from './../src/lists/lists.entity';
 import configuration from './../src/config/configuration';
-import { getLists, queryLists } from './mocks/lists.mock';
+import { listsMock, createList } from './mocks/lists.mock';
 import { ListsService } from './../src/lists/lists.service';
 import { ListsResolver } from './../src/lists/lists.resolver';
 import { ListRepository } from './../src/lists/lists.repository';
@@ -16,7 +16,8 @@ import { JwtStrategy } from './../src/auth/strategies/jwt.strategy';
 
 describe('lists (e2e)', () => {
   const listsService = {
-    getLists: () => [getLists],
+    getLists: () => [listsMock.response],
+    createList: () => createList.response,
   };
   const mockGuard: CanActivate = {
     canActivate: jest.fn((context) => {
@@ -70,7 +71,7 @@ describe('lists (e2e)', () => {
     request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: queryLists,
+        query: listsMock.query,
       })
       .expect(200)
       .expect(({ body: { errors } }) => {
@@ -86,10 +87,38 @@ describe('lists (e2e)', () => {
         Authorization: 'Bearer xxx',
       })
       .send({
-        query: queryLists,
+        query: listsMock.query,
       })
       .expect(200)
       .expect({ data: { getLists: listsService.getLists() } })
+      .end(done);
+  });
+
+  it('should create list', (done) => {
+    return request(app.getHttpServer())
+      .post('/graphql')
+      .set({
+        Authorization: 'Bearer xxx',
+      })
+      .send({
+        query: createList.mutation,
+      })
+      .expect(200)
+      .expect({ data: { createList: listsService.createList() } })
+      .end(done);
+  });
+
+  it('should add movie to list', (done) => {
+    return request(app.getHttpServer())
+      .post('/graphql')
+      .set({
+        Authorization: 'Bearer xxx',
+      })
+      .send({
+        query: createList.mutation,
+      })
+      .expect(200)
+      .expect({ data: { createList: listsService.createList() } })
       .end(done);
   });
 });

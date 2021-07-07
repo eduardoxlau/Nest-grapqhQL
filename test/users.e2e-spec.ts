@@ -1,15 +1,20 @@
 import * as request from 'supertest';
+import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { INestApplication } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { User } from './../src/users/users.entity';
-import { loginMock, createUserMock } from './mocks/users.mock';
 import { AuthService } from './../src/auth/auth.service';
+import configuration from './../src/config/configuration';
 import { UsersService } from './../src/users/users.service';
 import { UsersResolver } from './../src/users/users.resolver';
 import { UserRepository } from './../src/users/users.repository';
+import { JwtStrategy } from './../src/auth/strategies/jwt.strategy';
+import { GqlAuthGuard } from './../src/auth/guards/gpl-auth.guard';
+import { loginMock, createUserMock, getUserMock } from './mocks/users.mock';
 
 describe('Users (e2e)', () => {
   const authService = {
@@ -17,6 +22,7 @@ describe('Users (e2e)', () => {
   };
   const userService = {
     createUser: () => createUserMock.response,
+    getUser: () => getUserMock.response,
   };
 
   let app: INestApplication;
@@ -27,8 +33,17 @@ describe('Users (e2e)', () => {
         GraphQLModule.forRoot({
           autoSchemaFile: true,
         }),
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [configuration],
+        }),
       ],
       providers: [
+        JwtStrategy,
+        {
+          provide: APP_GUARD,
+          useClass: GqlAuthGuard,
+        },
         {
           provide: getRepositoryToken(User),
           useClass: UserRepository,
@@ -72,6 +87,19 @@ describe('Users (e2e)', () => {
       })
       .expect(200)
       .expect({ data: { createUser: userService.createUser() } })
+      .end(done);
+  });
+
+  it('should throw error when token is not set', (done) => {
+    return request(app.getHttpServer())
+      .post('/graphql')
+      .send({
+        query: getUserMock.query,
+      })
+      .expect(200)
+      .expect(({ body: { errors } }) => {
+        expect(errors.length).toBeGreaterThan(0);
+      })
       .end(done);
   });
 });

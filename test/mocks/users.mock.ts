@@ -23,4 +23,35 @@ const createUserMock = {
     full_name: 'xxx',
   },
 };
-export { loginMock, createUserMock };
+
+const getUserMock = {
+  query: `{
+    getUser{
+      id
+      email
+      full_name
+      photo_path
+      lists{
+        id
+        name
+      }
+    }
+  }`,
+  response: {
+    id: 67,
+    email: 'sanchezpazrafael@gmail.com',
+    full_name: 'rafael sanchez paz',
+    photo_path: 'ss',
+    lists: [
+      {
+        id: 30,
+        name: 'Rafel`s list',
+      },
+      {
+        id: 31,
+        name: 'Rafel`s list new',
+      },
+    ],
+  },
+};
+export { loginMock, createUserMock, getUserMock };
