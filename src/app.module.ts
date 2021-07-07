@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -10,7 +9,6 @@ import configuration from './config/configuration';
 import { MoviesModule } from './movies/movies.module';
 import { VideosModule } from './videos/videos.module';
 import { GenresModule } from './genres/genres.module';
-import { GqlAuthGuard } from './auth/guards/gpl-auth.guard';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -32,12 +30,6 @@ import { GqlAuthGuard } from './auth/guards/gpl-auth.guard';
     ListsModule,
   ],
   controllers: [],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: GqlAuthGuard,
-    },
-  ],
 })
 export class AppModule {
   static port: string;

@@ -1,5 +1,5 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 
 import { List } from './lists.entity';
 import { User } from './../users/users.entity';
@@ -74,6 +74,6 @@ export class ListsService {
 
   private isOwnerList(list: List, user: User): boolean {
     if (list.userId === user.id) return true;
-    throw new UnauthorizedException();
+    throw new ForbiddenException();
   }
 }

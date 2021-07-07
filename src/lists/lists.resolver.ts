@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { List } from './lists.entity';
@@ -6,20 +7,23 @@ import { User } from './../users/users.entity';
 import { GetListArgs } from './dto/args/get-list.arg';
 import { CurrentUser } from './../auth/auth.decorator';
 import { ResponseStatus } from './../utils/types/response';
+import { ListMovieInput } from './dto/input/listMovie.input';
+import { GqlAuthGuard } from './../auth/guards/gpl-auth.guard';
 import { CreateListInput } from './dto/input/createList.input';
 import { UpdateListInput } from './dto/input/updateList.input';
-import { ListMovieInput } from './dto/input/listMovie.input';
 
 @Resolver(() => List)
 export class ListsResolver {
   constructor(private readonly _listsService: ListsService) {}
 
   @Query(() => [List])
+  @UseGuards(GqlAuthGuard)
   getLists(@CurrentUser() user: User): Promise<List[]> {
     return this._listsService.getLists(user);
   }
 
   @Query(() => List)
+  @UseGuards(GqlAuthGuard)
   getList(
     @Args() getListArgs: GetListArgs,
     @CurrentUser() user: User,
@@ -28,6 +32,7 @@ export class ListsResolver {
   }
 
   @Mutation(() => List)
+  @UseGuards(GqlAuthGuard)
   createList(
     @Args('input')
     input: CreateListInput,
@@ -37,6 +42,7 @@ export class ListsResolver {
   }
 
   @Mutation(() => ResponseStatus)
+  @UseGuards(GqlAuthGuard)
   async updateList(
     @Args('input')
     input: UpdateListInput,
@@ -47,6 +53,7 @@ export class ListsResolver {
   }
 
   @Mutation(() => ResponseStatus)
+  @UseGuards(GqlAuthGuard)
   async deleteList(
     @Args('id')
     id: number,
@@ -57,6 +64,7 @@ export class ListsResolver {
   }
 
   @Mutation(() => ResponseStatus)
+  @UseGuards(GqlAuthGuard)
   async addMovieToList(
     @Args('input')
     input: ListMovieInput,
@@ -67,6 +75,7 @@ export class ListsResolver {
   }
 
   @Mutation(() => ResponseStatus)
+  @UseGuards(GqlAuthGuard)
   async removeMovieToList(
     @Args('input')
     input: ListMovieInput,

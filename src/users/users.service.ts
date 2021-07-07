@@ -1,5 +1,5 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { User } from './users.entity';
 import { UserRepository } from './users.repository';
@@ -20,7 +20,7 @@ export class UsersService {
   async getUser(email: string): Promise<User> {
     const user = await this._userRepository.findOne({ email });
     if (user) return user;
-    throw new UnauthorizedException();
+    throw new NotFoundException('User not exist');
   }
 
   async createUser(input: CreateUserInput): Promise<User> {

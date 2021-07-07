@@ -23,7 +23,7 @@ export class AuthService {
 
     if (user && isPassword) return this.login(user);
 
-    throw new UnauthorizedException();
+    throw new UnauthorizedException('Password is wrong');
   }
 
   async login(user: User) {
