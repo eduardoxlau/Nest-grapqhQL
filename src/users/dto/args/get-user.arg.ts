@@ -5,5 +5,5 @@ import { ArgsType, Field } from '@nestjs/graphql';
 export class GetUserArgs {
   @Field()
   @IsNotEmpty()
-  email: string;
+  id: string;
 }

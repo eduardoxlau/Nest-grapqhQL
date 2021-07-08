@@ -8,10 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { List } from './../lists/lists.entity';
 import { Video } from './../videos/videos.entity';
 import { Genre } from './../genres/genres.entity';
-
 @ObjectType()
 @Entity()
 export class Movie {
@@ -60,10 +58,4 @@ export class Movie {
   })
   @JoinTable()
   genres: Genre[];
-
-  @Field(() => [List], { nullable: true })
-  @ManyToMany(() => List, (list) => list.movies, {
-    lazy: true,
-  })
-  lists: List[];
 }

@@ -40,17 +40,16 @@ describe('Movies (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
   });
-  afterEach(async () => {
-    return await app.close();
+  afterAll(async () => {
+    await app.close();
   });
-  it('should return movies with videos and genres', (done) => {
+  it('should return movies with videos and genres', () => {
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
         query,
       })
       .expect(200)
-      .expect({ data: { getMovies: moviesService.paginate() } })
-      .end(done);
+      .expect({ data: { getMovies: moviesService.paginate() } });
   });
 });
