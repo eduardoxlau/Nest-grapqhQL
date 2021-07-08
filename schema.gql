@@ -2,15 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: String!
-  email: String!
-  full_name: String!
-  photo_path: String!
-  password_salt: String!
-  password_hash: String!
-}
-
 type Video {
   id: Float!
   size: String!
@@ -37,12 +28,41 @@ type Movie {
   imdb_id: String!
   videos: [Video!]
   genres: [Genre!]
+  lists: [List!]
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type List {
+  id: Float!
+  name: String!
+  description: String!
+  public: Boolean!
+  userId: Int!
+  user: User
+  movies: [Movie!]
+}
+
+type User {
+  id: Float!
+  email: String!
+  full_name: String!
+  photo_path: String!
+  password_salt: String!
+  password_hash: String!
+  lists: [List!]
+}
+
+type Token {
+  access_token: String!
+}
+
+type ResponseStatus {
+  status: String!
+}
 
 type Meta {
   itemCount: Float!
@@ -59,19 +79,21 @@ type PaginatedMovies {
 
 type Query {
   getUsers: [User!]!
-  getUser(id: String!): User!
+  getUser: User!
   getMovies(order: String = "DESC", search: String = "", page: Float = 1, limit: Float = 10): PaginatedMovies!
   getMovie(id: Float!): Movie
   getVideos: [Video!]!
   getVideo(id: Float!): Video!
   getGenres: [Genre!]!
   getGenre(id: Float!): Genre!
+  getLists: [List!]!
+  getList(id: Float!): List!
 }
 
 type Mutation {
-  createUser(input: UserInput!): User!
-  updateUser(input: UserInput!): User!
-  deleteUser(id: String!): User
+  login(input: LoginInput!): Token!
+  createUser(input: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): ResponseStatus!
   createMovie(input: MovieInput!): Movie!
   updateMovie(input: MovieInput!): Movie!
   deleteMovie(id: String!): Movie
@@ -80,15 +102,28 @@ type Mutation {
   deleteVideo(id: String!): Video
   createGenre(input: GenreInput!): Genre!
   deleteGenre(id: String!): Genre
+  createList(input: CreateListInput!): List!
+  updateList(input: UpdateListInput!): ResponseStatus!
+  deleteList(id: Float!): ResponseStatus!
+  addMovieToList(input: ListMovieInput!): ResponseStatus!
+  removeMovieToList(input: ListMovieInput!): ResponseStatus!
 }
 
-input UserInput {
-  id: String
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
   email: String!
   full_name: String!
   photo_path: String!
-  password_salt: String!
-  password_hash: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  full_name: String!
+  photo_path: String!
 }
 
 input MovieInput {
@@ -114,4 +149,22 @@ input VideoInput {
   type: String!
   url: String!
   movieId: Int!
+}
+
+input CreateListInput {
+  name: String!
+  description: String
+  public: Boolean = true
+}
+
+input UpdateListInput {
+  id: Float!
+  name: String!
+  description: String!
+  public: Boolean!
+}
+
+input ListMovieInput {
+  listId: Float!
+  movieId: Float!
 }

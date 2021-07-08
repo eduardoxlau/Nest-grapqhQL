@@ -1,10 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class UserInput {
-  @Field({ nullable: true })
-  id: string;
-
+export class CreateUserInput {
   @Field()
   email: string;
 
@@ -15,8 +12,5 @@ export class UserInput {
   photo_path: string;
 
   @Field()
-  password_salt: string;
-
-  @Field()
-  password_hash: string;
+  password: string;
 }
