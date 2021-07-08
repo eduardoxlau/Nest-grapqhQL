@@ -3,6 +3,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersModule } from './users/user.module';
+import { MoviesModule } from './movies/movies.module';
+import { VideosModule } from './videos/videos.module';
+import { GenresModule } from './genres/genres.module';
 
 @Module({
   imports: [
@@ -10,8 +13,13 @@ import { UsersModule } from './users/user.module';
       autoSchemaFile: 'schema.gql',
       playground: true,
     }),
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot({
+      logging: ['query', 'error'],
+    }),
     UsersModule,
+    MoviesModule,
+    VideosModule,
+    GenresModule,
   ],
   controllers: [],
   providers: [],
