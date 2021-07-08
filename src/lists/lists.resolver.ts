@@ -5,12 +5,12 @@ import { List } from './lists.entity';
 import { ListsService } from './lists.service';
 import { User } from './../users/users.entity';
 import { GetListArgs } from './dto/args/get-list.arg';
-import { CurrentUser } from './../auth/auth.decorator';
 import { ResponseStatus } from './../utils/types/response';
 import { ListMovieInput } from './dto/input/listMovie.input';
 import { GqlAuthGuard } from './../auth/guards/gpl-auth.guard';
 import { CreateListInput } from './dto/input/createList.input';
 import { UpdateListInput } from './dto/input/updateList.input';
+import { CurrentUser } from '../auth/decorators/auth.decorator';
 
 @Resolver(() => List)
 export class ListsResolver {

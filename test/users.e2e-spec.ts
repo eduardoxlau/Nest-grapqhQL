@@ -13,7 +13,6 @@ import { UsersService } from './../src/users/users.service';
 import { UsersResolver } from './../src/users/users.resolver';
 import { UserRepository } from './../src/users/users.repository';
 import { JwtStrategy } from './../src/auth/strategies/jwt.strategy';
-import { GqlAuthGuard } from './../src/auth/guards/gpl-auth.guard';
 import { loginMock, createUserMock, getUserMock } from './mocks/users.mock';
 
 describe('Users (e2e)', () => {
@@ -40,10 +39,6 @@ describe('Users (e2e)', () => {
       ],
       providers: [
         JwtStrategy,
-        {
-          provide: APP_GUARD,
-          useClass: GqlAuthGuard,
-        },
         {
           provide: getRepositoryToken(User),
           useClass: UserRepository,

@@ -8,9 +8,9 @@ module.exports = {
   logging: true,
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: false,
-  migrations: ['dist/database/migrations/*{.ts,.js}'],
+  migrations: ['dist/**/database/migrations/*{.ts,.js}'],
   factories: ['dist/**/database/factories/**/*.js'],
-  seeds: ['dist/**/database/seeds/**/*.js'],
+  seeds: ['dist/**/database/seeders/**/*.js'],
   cli: {
     migrationsDir: 'src/database/migrations',
   },

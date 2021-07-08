@@ -1,10 +1,9 @@
 import * as request from 'supertest';
-import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { GqlExecutionContext, GraphQLModule } from '@nestjs/graphql';
-import { CanActivate, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
+import { GqlExecutionContext, GraphQLModule } from '@nestjs/graphql';
 
 import { List } from './../src/lists/lists.entity';
 import configuration from './../src/config/configuration';
@@ -12,6 +11,7 @@ import { listsMock, createList } from './mocks/lists.mock';
 import { ListsService } from './../src/lists/lists.service';
 import { ListsResolver } from './../src/lists/lists.resolver';
 import { ListRepository } from './../src/lists/lists.repository';
+import { GqlAuthGuard } from './../src/auth/guards/gpl-auth.guard';
 import { JwtStrategy } from './../src/auth/strategies/jwt.strategy';
 
 describe('lists (e2e)', () => {
@@ -19,7 +19,7 @@ describe('lists (e2e)', () => {
     getLists: () => [listsMock.response],
     createList: () => createList.response,
   };
-  const mockGuard: CanActivate = {
+  const mockGuard = {
     canActivate: jest.fn((context) => {
       const ctx = GqlExecutionContext.create(context);
       const { headers } = ctx.getContext().req;
@@ -44,10 +44,6 @@ describe('lists (e2e)', () => {
       providers: [
         JwtStrategy,
         {
-          provide: APP_GUARD,
-          useValue: mockGuard,
-        },
-        {
           provide: getRepositoryToken(List),
           useClass: ListRepository,
         },
@@ -57,6 +53,8 @@ describe('lists (e2e)', () => {
     })
       .overrideProvider(ListsService)
       .useValue(listsService)
+      .overrideGuard(GqlAuthGuard)
+      .useValue(mockGuard)
       .compile();
 
     app = moduleFixture.createNestApplication();

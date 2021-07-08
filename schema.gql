@@ -53,6 +53,7 @@ type User {
   photo_path: String!
   password_salt: String!
   password_hash: String!
+  admin: Boolean!
   lists: [List!]
 }
 

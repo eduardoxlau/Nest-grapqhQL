@@ -7,5 +7,3 @@ export const jwtConstants = {
     signOptions: { expiresIn: '1d' },
   }),
 };
-
-export const whiteListResolver = ['login', 'createUser'];

@@ -17,7 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "verify": "yarn run lint && yarn run test:cov  --passWithNoTests && yarn run test:e2e && ts-node ./merge-coverage.ts --report coverage/unit/coverage-final.json --report coverage/e2e/coverage-final.json",
+    "test:all:cov": "yarn run lint && yarn run test:cov  --passWithNoTests && yarn run test:e2e && ts-node ./merge-coverage.ts --report coverage/unit/coverage-final.json --report coverage/e2e/coverage-final.json",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:e2e:cov": "jest --config ./test/jest-e2e.json --runInBand --detectOpenHandles --coverage",

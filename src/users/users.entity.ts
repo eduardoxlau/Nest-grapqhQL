@@ -36,6 +36,10 @@ export class User {
   @Column()
   password_hash: string;
 
+  @Field()
+  @Column({ default: false })
+  admin: boolean;
+
   @BeforeInsert()
   @BeforeUpdate()
   lowerCase?(): void {

@@ -6,11 +6,13 @@ import { Token } from './dto/types/token';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service';
 import { LoginInput } from './dto/input/login.input';
-import { CurrentUser } from './../auth/auth.decorator';
 import { ResponseStatus } from '../utils/types/response';
+import { RolesGuard } from './../auth/guards/roles.guard';
+import { Admin } from '../auth/decorators/admin.decorator';
 import { CreateUserInput } from './dto/input/createUser.input';
 import { UpdateUserInput } from './dto/input/updateUser.input';
 import { GqlAuthGuard } from './../auth/guards/gpl-auth.guard';
+import { CurrentUser } from '../auth/decorators/auth.decorator';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -36,6 +38,8 @@ export class UsersResolver {
   }
 
   @Query(() => [User])
+  @Admin()
+  @UseGuards(RolesGuard)
   @UseGuards(GqlAuthGuard)
   getUsers(): Promise<User[]> {
     return this._usersService.getUsers();
