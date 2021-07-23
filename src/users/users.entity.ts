@@ -5,10 +5,13 @@ import {
   BeforeInsert,
   PrimaryGeneratedColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 import { List } from './../lists/lists.entity';
+import { Movie } from 'src/movies/movies.entity';
 @ObjectType()
 @Entity()
 export class User {
@@ -49,6 +52,16 @@ export class User {
   @Field(() => [List], { nullable: true })
   @OneToMany(() => List, (list) => list.user, {
     lazy: true,
+    onDelete: 'CASCADE',
   })
   lists: List[];
+
+  @Field(() => [Movie], { nullable: true })
+  @ManyToMany(() => Movie, (movie) => movie.users, {
+    lazy: true,
+  })
+  @JoinTable({
+    name: 'movies_seen_by_user',
+  })
+  movies: Movie[];
 }

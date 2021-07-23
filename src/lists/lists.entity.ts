@@ -37,6 +37,7 @@ export class List {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.lists, {
     lazy: true,
+    onDelete: 'CASCADE',
   })
   user: User;
 

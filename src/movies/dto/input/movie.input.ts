@@ -19,6 +19,15 @@ export class MovieInput {
   release_date: Date;
 
   @Field()
+  stars: number;
+
+  @Field()
+  trailer_url: string;
+
+  @Field()
+  card_url: string;
+
+  @Field()
   poster_url: string;
 
   @Field()

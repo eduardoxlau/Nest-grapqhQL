@@ -4,6 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './users.entity';
 import { Token } from './dto/types/token';
 import { UsersService } from './users.service';
+import { Movie } from './../movies/movies.entity';
 import { AuthService } from '../auth/auth.service';
 import { LoginInput } from './dto/input/login.input';
 import { ResponseStatus } from '../utils/types/response';
@@ -45,6 +46,13 @@ export class UsersResolver {
     return this._usersService.getUsers();
   }
 
+  @Query(() => [Movie])
+  @UseGuards(RolesGuard)
+  @UseGuards(GqlAuthGuard)
+  getMoviesSeen(@CurrentUser() user: User): Promise<Movie[]> {
+    return this._usersService.getMoviesSeen(user);
+  }
+
   @Query(() => User)
   @UseGuards(GqlAuthGuard)
   getUser(@CurrentUser() user: User): Promise<User> {
@@ -59,6 +67,24 @@ export class UsersResolver {
     @CurrentUser() user: User,
   ): Promise<ResponseStatus> {
     await this._usersService.updateUser(input, user);
+    return { status: 'success' };
+  }
+
+  @Mutation(() => ResponseStatus)
+  @UseGuards(GqlAuthGuard)
+  async deleteUser(@CurrentUser() user: User): Promise<ResponseStatus> {
+    await this._usersService.deleteUser(user);
+    return { status: 'success' };
+  }
+
+  @Mutation(() => ResponseStatus)
+  @UseGuards(GqlAuthGuard)
+  async seenMovie(
+    @Args('movieId')
+    movieId: number,
+    @CurrentUser() user: User,
+  ): Promise<ResponseStatus> {
+    await this._usersService.seenMovie(movieId, user);
     return { status: 'success' };
   }
 }

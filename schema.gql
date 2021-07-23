@@ -23,12 +23,16 @@ type Movie {
   tagline: String!
   overview: String!
   release_date: DateTime!
+  stars: Float!
+  trailer_url: String!
+  card_url: String!
   poster_url: String!
   backdrop_url: String!
   imdb_id: String!
   videos: [Video!]
   genres: [Genre!]
   lists: [List!]
+  users: [User!]
 }
 
 """
@@ -55,10 +59,12 @@ type User {
   password_hash: String!
   admin: Boolean!
   lists: [List!]
+  movies: [Movie!]
 }
 
 type Token {
   access_token: String!
+  user: User!
 }
 
 type ResponseStatus {
@@ -80,6 +86,7 @@ type PaginatedMovies {
 
 type Query {
   getUsers: [User!]!
+  getMoviesSeen: [Movie!]!
   getUser: User!
   getMovies(order: String = "DESC", search: String = "", page: Float = 1, limit: Float = 10): PaginatedMovies!
   getMovie(id: Float!): Movie
@@ -95,6 +102,8 @@ type Mutation {
   login(input: LoginInput!): Token!
   createUser(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): ResponseStatus!
+  deleteUser: ResponseStatus!
+  seenMovie(movieId: Float!): ResponseStatus!
   createMovie(input: MovieInput!): Movie!
   updateMovie(input: MovieInput!): Movie!
   deleteMovie(id: String!): Movie
@@ -133,6 +142,9 @@ input MovieInput {
   tagline: String!
   overview: String!
   release_date: DateTime!
+  stars: Float!
+  trailer_url: String!
+  card_url: String!
   poster_url: String!
   backdrop_url: String!
   imdb_id: String!
@@ -162,7 +174,7 @@ input UpdateListInput {
   id: Float!
   name: String!
   description: String!
-  public: Boolean!
+  public: Boolean
 }
 
 input ListMovieInput {
