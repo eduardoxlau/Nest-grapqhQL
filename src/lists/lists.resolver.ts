@@ -63,25 +63,23 @@ export class ListsResolver {
     return { status: 'success' };
   }
 
-  @Mutation(() => ResponseStatus)
+  @Mutation(() => List)
   @UseGuards(GqlAuthGuard)
   async addMovieToList(
     @Args('input')
     input: ListMovieInput,
     @CurrentUser() user: User,
-  ): Promise<ResponseStatus> {
-    await this._listsService.addMovie(input.listId, input.movieId, user);
-    return { status: 'success' };
+  ): Promise<List> {
+    return this._listsService.addMovie(input.listId, input.movieId, user);
   }
 
-  @Mutation(() => ResponseStatus)
+  @Mutation(() => List)
   @UseGuards(GqlAuthGuard)
   async removeMovieToList(
     @Args('input')
     input: ListMovieInput,
     @CurrentUser() user: User,
-  ): Promise<ResponseStatus> {
-    await this._listsService.removeMovie(input.listId, input.movieId, user);
-    return { status: 'success' };
+  ): Promise<List> {
+    return this._listsService.removeMovie(input.listId, input.movieId, user);
   }
 }

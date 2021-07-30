@@ -115,8 +115,8 @@ type Mutation {
   createList(input: CreateListInput!): List!
   updateList(input: UpdateListInput!): ResponseStatus!
   deleteList(id: Float!): ResponseStatus!
-  addMovieToList(input: ListMovieInput!): ResponseStatus!
-  removeMovieToList(input: ListMovieInput!): ResponseStatus!
+  addMovieToList(input: ListMovieInput!): List!
+  removeMovieToList(input: ListMovieInput!): List!
 }
 
 input LoginInput {
