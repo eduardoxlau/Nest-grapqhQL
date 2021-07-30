@@ -16,7 +16,6 @@ export class MoviesResolver {
   constructor(private readonly _MoviesService: MoviesService) {}
 
   @Query(() => PaginatedMovies)
-  @Admin()
   @UseGuards(RolesGuard)
   @UseGuards(GqlAuthGuard)
   getMovies(@Args() filters: GetMoviesArgs): Promise<Pagination<Movie>> {
@@ -24,7 +23,6 @@ export class MoviesResolver {
   }
 
   @Query(() => Movie, { nullable: true })
-  @Admin()
   @UseGuards(RolesGuard)
   @UseGuards(GqlAuthGuard)
   getMovie(@Args() filters: GetMovieArgs): Promise<Movie> {
@@ -32,7 +30,6 @@ export class MoviesResolver {
   }
 
   @Mutation(() => Movie)
-  @Admin()
   @UseGuards(RolesGuard)
   @UseGuards(GqlAuthGuard)
   createMovie(
@@ -43,7 +40,6 @@ export class MoviesResolver {
   }
 
   @Mutation(() => Movie)
-  @Admin()
   @UseGuards(RolesGuard)
   @UseGuards(GqlAuthGuard)
   updateMovie(

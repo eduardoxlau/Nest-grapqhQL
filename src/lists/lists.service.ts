@@ -42,6 +42,7 @@ export class ListsService {
   async updateList(input: UpdateListInput, user: User): Promise<void> {
     const { id, ...data } = input;
     const list = await this.getList({ id }, user);
+
     await this._ListRepository.update(list.id, data);
   }
 
@@ -50,7 +51,7 @@ export class ListsService {
     await this._ListRepository.delete(list.id);
   }
 
-  async addMovie(listId: number, movieId: number, user: User): Promise<void> {
+  async addMovie(listId: number, movieId: number, user: User): Promise<List> {
     const list = await this.getList({ id: listId }, user);
     const movie = await this._moviesService.getMovie({ id: movieId });
     const myMovies = await list.movies;
@@ -58,18 +59,20 @@ export class ListsService {
     list.movies = [...myMovies, movie];
 
     await this._ListRepository.save(list);
+    return list;
   }
   async removeMovie(
     listId: number,
     movieId: number,
     user: User,
-  ): Promise<void> {
+  ): Promise<List> {
     const list = await this.getList({ id: listId }, user);
     const myMovies = await list.movies;
 
     list.movies = myMovies.filter((movie: Movie) => movie.id !== movieId);
 
     await this._ListRepository.save(list);
+    return list;
   }
 
   private isOwnerList(list: List, user: User): boolean {

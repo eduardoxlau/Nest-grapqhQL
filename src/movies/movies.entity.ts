@@ -11,6 +11,7 @@ import {
 import { List } from './../lists/lists.entity';
 import { Video } from './../videos/videos.entity';
 import { Genre } from './../genres/genres.entity';
+import { User } from 'src/users/users.entity';
 
 @ObjectType()
 @Entity()
@@ -34,6 +35,18 @@ export class Movie {
   @Field()
   @Column()
   release_date: Date;
+
+  @Field()
+  @Column()
+  stars: number;
+
+  @Field()
+  @Column()
+  trailer_url: string;
+
+  @Field()
+  @Column()
+  card_url: string;
 
   @Field()
   @Column()
@@ -66,4 +79,8 @@ export class Movie {
     lazy: true,
   })
   lists: List[];
+
+  @Field(() => [User], { nullable: true })
+  @ManyToMany(() => User, (user) => user.movies)
+  users: User[];
 }

@@ -1,6 +1,7 @@
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { ExecutionContext } from '@nestjs/common';
+import { AuthenticationError } from 'apollo-server-express';
 
 export class GqlAuthGuard extends AuthGuard('jwt') {
   getRequest(context: ExecutionContext): Express.Request {
@@ -9,7 +10,7 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(_, user, err) {
-    if (err) throw new UnauthorizedException(err.message);
+    if (err) throw new AuthenticationError(err.message);
     return user;
   }
 }

@@ -10,7 +10,7 @@ define(User, (faker: typeof Faker) => {
   const user = new User();
   user.email = faker.internet.email();
   user.full_name = faker.internet.userName();
-  user.photo_path = faker.image.imageUrl();
+  user.photo_path = 'http://localhost:4000/avatar.png';
   user.password_salt = salt;
   user.password_hash = hash;
 

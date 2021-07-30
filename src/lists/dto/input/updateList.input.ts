@@ -11,6 +11,6 @@ export class UpdateListInput {
   @Field()
   description: string;
 
-  @Field()
+  @Field({ nullable: true })
   public: boolean;
 }
